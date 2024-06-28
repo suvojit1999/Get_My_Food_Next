@@ -42,6 +42,9 @@ const Header = () => {
             setCart(res?.userCarts)
         })
     }
+    const runthis = ()=>{
+        alert('login credentials: Email: your_email+clerk_test@example.com   Verification Code: 424242')
+    }
 
     return (
         <div className="shadow-lg w-[100vw] flex flex-col justify-center items-center ">
@@ -73,7 +76,7 @@ const Header = () => {
 
                         :
                         <div className="flex justify-center items-center gap-4">
-                            <SignInButton className="px-3 py-[3px] border-[3px] border-[#ed0909] rounded-lg text-[#ed0909] font-semibold" mode="modal">Sign In</SignInButton>
+                            <SignInButton className="px-3 py-[3px] border-[3px] border-[#ed0909] rounded-lg text-[#ed0909] font-semibold" mode="redirect">Sign In</SignInButton>
                             <SignUpButton mode="modal" className="px-3 py-[6px] bg-[#ed0909] rounded-lg text-white font-semibold ">Sign Up</SignUpButton>
                         </div>
                     }

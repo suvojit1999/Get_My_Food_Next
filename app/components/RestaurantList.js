@@ -1,20 +1,33 @@
 'use client'
 import { useSearchParams } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import GlobalApi from '../_utils/GlobalApi'
 import ResCard from './ResCard'
 import ResListLoading from './ResListLoading'
+import { CartUpdateContext } from '../_context/CartUpdateContext'
 
 const RestaurantList = () => {
     const params = useSearchParams()
     const [category, setcategory] = useState('all')
     const [ResList, setResList] = useState([])
     const [Loading, setLoading] = useState(false)
+    const {search, setSearch} = useContext(CartUpdateContext)
+    const storeRef = useRef()
+    const listRef = useRef()
 
     useEffect(() => {
-        params && setcategory(params.get('category'))
-        params && GetRestaurantList(params.get('category'))
-    }, [params])
+        if(!search || listRef.current.length==0){
+            params && setcategory(params.get('category'))
+            params && GetRestaurantList(params.get('category'))
+        }
+        else{
+            setResList(listRef.current)
+        }
+    }, [params, search])
+
+    useEffect(()=>{
+        GetSearchedRestro()
+    }, [search])
 
     const GetRestaurantList = (cate) => {
         setLoading(true)
@@ -23,6 +36,16 @@ const RestaurantList = () => {
             setResList(res.restaurants)
         })
         setLoading(false)
+    }
+
+    const GetSearchedRestro = ()=>{
+        GlobalApi.GetRestaurant('all').then(res => {
+            console.log(res.restaurants)
+            storeRef.current = res.restaurants
+            console.log(storeRef.current.filter(item=> item.name.includes(search)))
+            listRef.current = storeRef.current.filter(item=> item.name.includes(search))
+
+        })
     }
 
     return (

@@ -7,9 +7,10 @@ import { PayPalScriptProvider } from '@paypal/react-paypal-js'
 
 const Provider = ({ children }) => {
     const [UpdateCart , setUpdateCart] = useState(false);
+    const [search, setSearch] = useState('')
     return (
         <PayPalScriptProvider options={{ clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID }}>
-        <CartUpdateContext.Provider value={{UpdateCart, setUpdateCart}}>
+        <CartUpdateContext.Provider value={{UpdateCart, setUpdateCart, search, setSearch}}>
         <div>
             <Header />
             <Toaster />

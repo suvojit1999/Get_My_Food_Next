@@ -48,7 +48,7 @@ const MenuSection = ({ Restaurant }) => {
       })
     }
     else{
-      alert('log in first!!!')
+      alert('log in first!!! Click on Sign In button to get dummy credentials for logging in to use the full functionalities.')
     }
   }
 

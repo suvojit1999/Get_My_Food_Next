@@ -9,12 +9,16 @@ const ResCard = ({ ResData }) => {
   const { user, isSignedIn } = useUser()
   const router = useRouter()
   const GoToDetails = ()=>{
-    if (isSignedIn){
-      router.push('/restaurant/'+ResData?.slug)
-    }
-    else{
-      alert('Please log in first')
-    }
+    // if (isSignedIn){
+    //   router.push('/restaurant/'+ResData?.slug)
+    // }
+    // else{
+    //   alert('Please log in first')
+    // }
+
+
+    router.push('/restaurant/'+ResData?.slug)
+    
   }
 
   const AvgStar = ()=>{

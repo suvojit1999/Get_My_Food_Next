@@ -11,7 +11,7 @@ import { FaStar } from "react-icons/fa";
 const ReviewSection = ({ Restaurant }) => {
     const [rating, setRating] = useState(0)
     const [ReviewText, setReviewText] = useState()
-    const { user } = useUser()
+    const { user, isSignedIn } = useUser()
     const [update, setUpdate] = useState(false)
     const [ReviewList, setReviewList] = useState([])
 
@@ -21,19 +21,22 @@ const ReviewSection = ({ Restaurant }) => {
 
 
     const HandleSubmit = () => {
-        const data = {
-            userName: user?.fullName,
-            email: user?.primaryEmailAddress?.emailAddress,
-            star: rating,
-            ProfileImage: user?.imageUrl,
-            ReviewText: ReviewText,
-            RestroSlug: Restaurant?.slug
+        if(isSignedIn){
+            const data = {
+                userName: user?.fullName,
+                email: user?.primaryEmailAddress?.emailAddress,
+                star: rating,
+                ProfileImage: user?.imageUrl,
+                ReviewText: ReviewText,
+                RestroSlug: Restaurant?.slug
+            }
+            GlobalApi.AddReview(data).then(res => {
+                console.log(res)
+                toast('Review Added !!!')
+                setUpdate(!update)
+            })
         }
-        GlobalApi.AddReview(data).then(res => {
-            console.log(res)
-            toast('Review Added !!!')
-            setUpdate(!update)
-        })
+
     }
 
     const getReviewList = () => {
@@ -48,8 +51,8 @@ const ReviewSection = ({ Restaurant }) => {
             <div className='flex flex-col gap-4 bg-slate-100 p-3 rounded-lg'>
                 <h2>Add Your Review:</h2>
                 <ReactRating style={{ maxWidth: 100 }} value={rating} onChange={setRating} />
-                <Textarea onChange={(e) => setReviewText(e.target.value)} />
-                <button className='w-full py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 disabled:bg-orange-800' disabled={rating == 0 || !ReviewText} onClick={() => { HandleSubmit() }}>Submit</button>
+                <Textarea onChange={(e) => setReviewText(e.target.value)}/>
+                <button className='w-full py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 disabled:bg-orange-800' disabled={rating == 0 || !ReviewText || !isSignedIn} onClick={() => { HandleSubmit() }}>{isSignedIn ? 'Submit' : 'Log In to Submit Review'}</button>
             </div>
             <div className='col-span-2 mt-6 md:mt-0 lg:mt-0'>
                 {ReviewList?.map((item, index) => (
